@@ -1,0 +1,4 @@
+#Tue Jul 09 08:39:55 BRT 2019
+base.0=D\:\\Documentos\\Android\\blink\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\1
+path.0=classes.dex
+renamed.0=classes.dex
