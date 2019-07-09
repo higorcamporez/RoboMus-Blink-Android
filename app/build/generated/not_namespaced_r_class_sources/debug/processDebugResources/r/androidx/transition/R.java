@@ -85,7 +85,7 @@ public final class R {
         public static final int actions = 0x7f080018;
         public static final int async = 0x7f08001e;
         public static final int blocking = 0x7f080022;
-        public static final int chronometer = 0x7f08002a;
+        public static final int chronometer = 0x7f08002b;
         public static final int forever = 0x7f08004b;
         public static final int ghost_view = 0x7f08004c;
         public static final int icon = 0x7f080052;
@@ -109,13 +109,13 @@ public final class R {
         public static final int tag_unhandled_key_listeners = 0x7f0800aa;
         public static final int text = 0x7f0800ab;
         public static final int text2 = 0x7f0800ac;
-        public static final int time = 0x7f0800b4;
-        public static final int title = 0x7f0800b5;
-        public static final int transition_current_scene = 0x7f0800bc;
-        public static final int transition_layout_save = 0x7f0800bd;
-        public static final int transition_position = 0x7f0800be;
-        public static final int transition_scene_layoutid_cache = 0x7f0800bf;
-        public static final int transition_transform = 0x7f0800c0;
+        public static final int time = 0x7f0800b5;
+        public static final int title = 0x7f0800b6;
+        public static final int transition_current_scene = 0x7f0800bd;
+        public static final int transition_layout_save = 0x7f0800be;
+        public static final int transition_position = 0x7f0800bf;
+        public static final int transition_scene_layoutid_cache = 0x7f0800c0;
+        public static final int transition_transform = 0x7f0800c1;
     }
     public static final class integer {
         private integer() {}
