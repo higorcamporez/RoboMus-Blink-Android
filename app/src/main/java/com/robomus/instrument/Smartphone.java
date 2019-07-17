@@ -35,7 +35,7 @@ public class Smartphone extends Instrument{
         this.textLog = textLog;
         this.polyphony = 1;
         this.typeFamily = "";
-        this.specificProtocol = "</playNote;note_s; duration_i>";
+        this.specificProtocol = "</playNote;note_n; duration_i>";
 
         try {
             this.receiver = new OSCPortIn(this.receivePort);
@@ -43,7 +43,6 @@ public class Smartphone extends Instrument{
             e.printStackTrace();
         }
         Note note = new Note("A4");
-
 
         listeningThread();
 
@@ -175,6 +174,16 @@ public class Smartphone extends Instrument{
 
         playSoundSmartphone(note.getFrequency(), duration);
 
+        //envia o atraso mecanico
+        OSCMessage oscMessage1 = new OSCMessage(this.serverOscAddress+"/delay"+this.myOscAddress);
+        oscMessage1.addArgument(idMessage);
+        oscMessage1.addArgument(new Long(500));
+        try {
+            sender.send(oscMessage1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
     public void receiveHandshake(OSCMessage oscMessage){
 
@@ -231,9 +240,9 @@ public class Smartphone extends Instrument{
         //send de msg with the broadcast ip
         String s = this.myIp;
         String[] ip = s.split("\\.");
-        //String broadcastIp = ip[0]+"."+ip[1]+"."+ip[2]+".255";
+        String broadcastIp = ip[0]+"."+ip[1]+"."+ip[2]+".255";
         //temporario
-        String broadcastIp = "172.20.25.91";
+        //String broadcastIp = "172.20.25.91";
         try {
             sender = new OSCPortOut(InetAddress.getByName(broadcastIp), this.receivePort);
         } catch (SocketException e) {
