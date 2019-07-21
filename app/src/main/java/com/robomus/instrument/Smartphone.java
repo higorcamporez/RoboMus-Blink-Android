@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import android.net.wifi.WifiManager;
-import android.text.format.Formatter;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -19,6 +17,7 @@ import java.util.List;
 import com.illposed.osc.*;
 
 import com.robomus.util.Note;
+import com.robomus.util.Notes;
 
 public class Smartphone extends Instrument{
 
@@ -26,6 +25,8 @@ public class Smartphone extends Instrument{
     private OSCPortIn receiver;
     private TextView textLog;
     private Activity activity;
+    private Note lastNote;
+    private  AudioTrack audioTrack;
 
     public Smartphone(String myIp, Activity activity, TextView textLog){
 
@@ -45,6 +46,11 @@ public class Smartphone extends Instrument{
         Note note = new Note("A4");
 
         listeningThread();
+
+        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
+                8000, AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                AudioFormat.ENCODING_PCM_16BIT, 4000,
+                AudioTrack.MODE_STATIC);
 
     }
 
@@ -88,6 +94,7 @@ public class Smartphone extends Instrument{
 
             public void acceptMessage(java.util.Date time, OSCMessage oscMessage) {
 
+                writeOnScreen(oscMessage);
                 String header = getHeader(oscMessage);
 
                 switch (header){
@@ -98,7 +105,7 @@ public class Smartphone extends Instrument{
                         playNote(oscMessage);
                         break;
                 }
-
+                /*
                 String log = oscMessage.getAddress()+" ";
                     List l = oscMessage.getArguments();
                     log += "[";
@@ -115,7 +122,7 @@ public class Smartphone extends Instrument{
                         textLog.append("\n"+ finalLog);
 
                     }
-                });
+                });*/
 
             }
         };
@@ -128,6 +135,7 @@ public class Smartphone extends Instrument{
         final int numSamples = (int) ( (float)(duration/1000) * (float)sampleRate );
         final double sample[] = new double[numSamples];
         byte generatedSnd[] = new byte[2 * numSamples];
+
 
         // fill out the array
         for (int i = 0; i < numSamples; ++i) {
@@ -146,13 +154,11 @@ public class Smartphone extends Instrument{
 
         }
 
-        final AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
-                sampleRate, AudioFormat.CHANNEL_CONFIGURATION_MONO,
-                AudioFormat.ENCODING_PCM_16BIT, numSamples,
-                AudioTrack.MODE_STATIC);
 
-        audioTrack.write(generatedSnd, 0, generatedSnd.length);
-        audioTrack.play();
+
+        this.audioTrack.write(generatedSnd, 0, generatedSnd.length);
+        this.audioTrack.play();
+
 
     }
 
@@ -171,20 +177,43 @@ public class Smartphone extends Instrument{
         Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
 
         Note note = new Note(symbolNote);
+        //calculando atraso mecânico
+        Long delay = calculateDelay(this.lastNote,note);
+
+        //simulando atraso mecânico
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         playSoundSmartphone(note.getFrequency(), duration);
 
-        //envia o atraso mecanico
+        this.lastNote = note;
+
+        //envia o atraso mecânico
         OSCMessage oscMessage1 = new OSCMessage(this.serverOscAddress+"/delay"+this.myOscAddress);
         oscMessage1.addArgument(idMessage);
-        oscMessage1.addArgument(new Long(500));
+        oscMessage1.addArgument(delay);
         try {
             sender.send(oscMessage1);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        writeOnScreen(oscMessage1);
     }
+
+    public Long calculateDelay(Note Note1, Note Note2){
+        Long delay;
+        if(this.lastNote == null){
+            delay = (long)100;
+        }else{
+            delay = Long.valueOf((Math.abs(Notes.getDistance(Note1, Note2, true) * 10)));
+        }
+
+        return delay;
+    }
+
     public void receiveHandshake(OSCMessage oscMessage){
 
         this.serverName = oscMessage.getArguments().get(0).toString();
@@ -219,6 +248,7 @@ public class Smartphone extends Instrument{
         }
 
     }
+
     public void sendHandshake(){
 
         List args = new ArrayList<>();
@@ -264,4 +294,30 @@ public class Smartphone extends Instrument{
 
     }
 
+    public void writeOnScreen(OSCMessage oscMessage){
+
+        String log = oscMessage.getAddress()+" ";
+        List l = oscMessage.getArguments();
+        log += "[";
+        for (Object l1 : l) {
+            log +=l1+",";
+        }
+        log += ']';
+
+        writeOnScreen(log);
+
+    }
+
+    public void writeOnScreen(String text){
+
+        final String finalLog = text;
+        this.activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                textLog.append("\n"+ finalLog);
+
+            }
+        });
+    }
 }

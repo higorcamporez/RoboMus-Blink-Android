@@ -5,36 +5,32 @@
     build-mode="COLD"
     density="xxhdpi"
     format="10"
-    ir-eligibility="COMPATIBLE"
     plugin-version="3.4.1"
-    timestamp="1563331275635"
+    timestamp="1563624902894"
     token="8688471846559744572"
     verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="322" />
+        duration="0" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="17" />
+        duration="0" />
     <task
         name="verifier"
-        duration="8" />
+        duration="0" />
 
     <artifact
-        location="D:\Documentos\Android\blink\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
+        location="D:\Documentos\Android\blink\app\build\intermediates\resources\instant-run\debug\resources-debug.apk"
         type="SPLIT" />
 
     <build
         build-mode="FULL"
-        timestamp="1563330264470"
+        timestamp="1563624572045"
         verifier="FULL_BUILD_REQUESTED" >
-        <artifact
-            location="D:\Documentos\Android\blink\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
-            type="SPLIT" />
         <artifact
             location="D:\Documentos\Android\blink\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
             type="SPLIT" />
@@ -49,6 +45,9 @@
             type="SPLIT" />
         <artifact
             location="D:\Documentos\Android\blink\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\Documentos\Android\blink\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
             type="SPLIT" />
         <artifact
             location="D:\Documentos\Android\blink\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
@@ -74,11 +73,10 @@
     </build>
     <build
         build-mode="COLD"
-        ir-eligibility="COMPATIBLE"
-        timestamp="1563331275635"
+        timestamp="1563624902894"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
-            location="D:\Documentos\Android\blink\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
+            location="D:\Documentos\Android\blink\app\build\intermediates\resources\instant-run\debug\resources-debug.apk"
             type="SPLIT" />
     </build>
 
