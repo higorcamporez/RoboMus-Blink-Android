@@ -4,7 +4,7 @@
             "outputFile": "D:\\Documentos\\Android\\blink\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-lo\\values-lo.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\higor\\.gradle\\caches\\transforms-2\\files-2.1\\c38141d80d5a48881e7a8903d66989b5\\res\\values-lo\\values-lo.xml",
+                    "source": "C:\\Users\\higor\\.gradle\\caches\\transforms-2\\files-2.1\\5353ecf87021def5a806280d20e19442\\res\\values-lo\\values-lo.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\higor\\.gradle\\caches\\transforms-2\\files-2.1\\521ac10e160240b8ca8c0521632217b3\\res\\values-lo\\values-lo.xml",
+                    "source": "C:\\Users\\higor\\.gradle\\caches\\transforms-2\\files-2.1\\e336ecdd80a43feb74f381bf2b9e74cf\\res\\values-lo\\values-lo.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

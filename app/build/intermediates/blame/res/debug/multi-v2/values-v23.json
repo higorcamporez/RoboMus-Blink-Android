@@ -4,7 +4,7 @@
             "outputFile": "D:\\Documentos\\Android\\blink\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v23\\values-v23.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\higor\\.gradle\\caches\\transforms-2\\files-2.1\\521ac10e160240b8ca8c0521632217b3\\res\\values-v23\\values-v23.xml",
+                    "source": "C:\\Users\\higor\\.gradle\\caches\\transforms-2\\files-2.1\\e336ecdd80a43feb74f381bf2b9e74cf\\res\\values-v23\\values-v23.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,19,32,33,34,35,36",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
@@ -15,7 +15,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\higor\\.gradle\\caches\\transforms-2\\files-2.1\\8b71967a3a1459da7a7a7854b36be855\\res\\values-v23\\values-v23.xml",
+                    "source": "C:\\Users\\higor\\.gradle\\caches\\transforms-2\\files-2.1\\3dc45ee9130b97e425e678f2f32f4c5a\\res\\values-v23\\values-v23.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

@@ -1,19 +1,19 @@
 package com.robomus.example.blink;
 
-import android.media.AudioFormat;
-import android.media.AudioManager;
-import android.media.AudioTrack;
+
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
 import com.example.blink.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.instacart.library.truetime.TrueTime;
+import com.instacart.library.truetime.TrueTimeRx;
+
+import com.medavox.library.mutime.MissingTimeDataException;
+import com.medavox.library.mutime.MuTime;
+import com.medavox.library.mutime.Ntp;
 import com.robomus.instrument.Smartphone;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ButtonBarLayout;
-import androidx.appcompat.widget.Toolbar;
 
 import android.os.StrictMode;
 import android.text.format.Formatter;
@@ -25,6 +25,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Date;
+
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,6 +59,52 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        TrueTimeRx.build()
+                //.withConnectionTimeout(31428)
+                //.withRetryCount(100)
+                //.withLoggingEnabled(true)
+                .withSharedPreferences(this)
+                .initializeRx("192.168.0.101")
+                .subscribeOn(Schedulers.io())
+                .subscribe(date -> {
+                    Log.v("tt", "TrueTime was initialized and we have a time: " + System.currentTimeMillis());
+                    Log.v("tt", "TrueTime was initialized and we have a time: " + date);
+                    textLog.append("\ntime serve: "+ date.toString());
+                }, throwable -> {
+                    Log.v("tt", "TrueTime deu ruim");
+                    throwable.printStackTrace();
+                });
+        Log.i("TrueTimeRx", TrueTimeRx.now().toString());
+
+
+        /*
+
+
+        try {
+            Ntp.performNtpAlgorithm(InetAddress.getByName("192.168.0.101") );
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        //get the real time in unix epoch format (milliseconds since midnight on 1 january 1970)
+        try {
+            Log.i("MuTime", String.valueOf(MuTime.hasTheTime()));
+            long theActualTime = MuTime.now();//throws MissingTimeDataException if we don't know the time
+            textLog.append(String.valueOf(System.currentTimeMillis() - theActualTime));
+            textLog.append(new Date(theActualTime).toString());
+        }
+        catch (MissingTimeDataException e) {
+            Log.e("MuTime", "failed to get the actual time:+e.getMessage()");
+        }
+         */
+        //while (!TrueTimeRx.isInitialized());
+        // you can now use this instead of your traditional new Date();
+        //Date myDate = TrueTimeRx.now();
+        //textLog.append(myDate.toString());
+        //get the real time in unix epoch format (milliseconds since midnight on 1 january 1970)
+
+        textLog.append("\ntime system: "+new Date(System.currentTimeMillis()).toString());
 
     }
 

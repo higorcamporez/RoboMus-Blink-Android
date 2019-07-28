@@ -164,13 +164,8 @@ public class Smartphone extends Instrument{
 
     void playNote(OSCMessage oscMessage){
 
-        Log.i("Smartphone:playNote()", "inicio");
+        //Log.i("Smartphone:playNote()", "inicio");
 
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
         String symbolNote = oscMessage.getArguments().get(1).toString();
@@ -181,15 +176,23 @@ public class Smartphone extends Instrument{
         Long delay = calculateDelay(this.lastNote,note);
 
         //simulando atraso mecânico
+        /*
         try {
             Thread.sleep(delay);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
         playSoundSmartphone(note.getFrequency(), duration);
 
         this.lastNote = note;
+        //Log.i("smartphone:playnote", delay.toString());
+
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         //envia o atraso mecânico
         OSCMessage oscMessage1 = new OSCMessage(this.serverOscAddress+"/delay"+this.myOscAddress);
@@ -208,7 +211,7 @@ public class Smartphone extends Instrument{
         if(this.lastNote == null){
             delay = (long)100;
         }else{
-            delay = Long.valueOf((Math.abs(Notes.getDistance(Note1, Note2, true) * 10)));
+            delay = Long.valueOf((Math.abs(Notes.getDistance(Note1, Note2, true) * 10))) + 10;
         }
 
         return delay;
@@ -320,4 +323,6 @@ public class Smartphone extends Instrument{
             }
         });
     }
+
+
 }
