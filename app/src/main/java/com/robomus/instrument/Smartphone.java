@@ -120,18 +120,16 @@ public class Smartphone extends Instrument{
                         receiveHandshake(oscMessage);
                         break;
                     case "playNote":
-                        if(time == null){
-                            Log.i(getClass().getName(),"time==null");
-                        }else{
-                            Log.i(getClass().getName(),"time== " +time.toString() );
 
-                        }
+                        Long delay = calculateDelay(
+                                lastNote, new Note(oscMessage.getArguments().get(1).toString())
+                                );
 
                         buffer.addMessage(
                                 new RoboMusMessage(
                                         time,
                                         oscMessage,
-                                        new PlayNote(midiDriver, oscMessage)
+                                        new PlayNote(midiDriver, oscMessage, delay, getSmartphone())
                                 )
                         );
                         break;
@@ -231,7 +229,9 @@ public class Smartphone extends Instrument{
         if(this.lastNote == null){
             delay = (long)100;
         }else{
-            delay = Long.valueOf((Math.abs(Notes.getDistance(Note1, Note2, true) * 10))) + 10;
+            delay = Long.valueOf(
+                    (Math.abs(Notes.getDistance(Note1, Note2, true) * 10))
+            ) + 10;
         }
 
         return delay;
@@ -363,4 +363,16 @@ public class Smartphone extends Instrument{
     }
 
     public Smartphone getSmartphone(){ return this;}
+
+    public OSCPortOut getSender() {
+        return sender;
+    }
+
+    public Note getLastNote() {
+        return lastNote;
+    }
+
+    public void setLastNote(Note lastNote) {
+        this.lastNote = lastNote;
+    }
 }

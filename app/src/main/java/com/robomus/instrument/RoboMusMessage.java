@@ -8,14 +8,8 @@ import java.util.Date;
 public class RoboMusMessage implements Comparable<RoboMusMessage>{
     private Date timestamp;
     private OSCMessage oscMessage;
-    private String actionName;
     private Action action;
 
-    public RoboMusMessage(Date timestamp, OSCMessage oscMessage, String actionName) {
-        this.timestamp = timestamp;
-        this.oscMessage = oscMessage;
-        this.actionName = actionName;
-    }
 
     public RoboMusMessage(Date timestamp, OSCMessage oscMessage, Action action) {
         this.timestamp = timestamp;
@@ -37,14 +31,6 @@ public class RoboMusMessage implements Comparable<RoboMusMessage>{
 
     public void setOscMessage(OSCMessage oscMessage) {
         this.oscMessage = oscMessage;
-    }
-
-    public String getActionName() {
-        return actionName;
-    }
-
-    public void setActionName(String actionName) {
-        this.actionName = actionName;
     }
 
     public void play(){
