@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.text.BoringLayout;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -39,6 +40,7 @@ public class Smartphone extends Instrument{
     private volatile Buffer buffer;
     private Boolean ntpTime = false;
     private volatile MidiDriver midiDriver;
+    private Boolean emulateDelay;
 
     public Smartphone(String myIp, Activity activity, TextView textLog){
 
@@ -49,7 +51,7 @@ public class Smartphone extends Instrument{
         this.polyphony = 1;
         this.typeFamily = "";
         this.specificProtocol = "</playNote;note_n; duration_i>";
-
+        this.emulateDelay = true;
         try {
             this.receiver = new OSCPortIn(this.receivePort);
         } catch (SocketException e) {
@@ -374,5 +376,13 @@ public class Smartphone extends Instrument{
 
     public void setLastNote(Note lastNote) {
         this.lastNote = lastNote;
+    }
+
+    public Boolean getEmulateDelay() {
+        return emulateDelay;
+    }
+
+    public void setEmulateDelay(Boolean emulateDelay) {
+        this.emulateDelay = emulateDelay;
     }
 }

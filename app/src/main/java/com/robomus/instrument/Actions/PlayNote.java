@@ -39,28 +39,35 @@ public class PlayNote implements Action {
 
     @Override
     public void play() {
-        try {
-            Thread.sleep(delay);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        if(smartphone.getEmulateDelay()){
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
         this.midiDriver.write(this.event);
 
         smartphone.setLastNote(this.note);
-        //envia o atraso mecânico
-        OSCMessage oscMessage1 = new OSCMessage(
-                smartphone.getServerOscAddress()+"/delay"+smartphone.getMyOscAddress()
-        );
 
-        oscMessage1.addArgument(idMessage);
-        oscMessage1.addArgument(delay);
+        if(smartphone.getEmulateDelay()){
+            //envia o atraso mecânico
+            OSCMessage oscMessage1 = new OSCMessage(
+                    smartphone.getServerOscAddress()+"/delay"+smartphone.getMyOscAddress()
+            );
 
-        try {
-            smartphone.getSender().send(oscMessage1);
-            Log.i(this.getClass().getName(),"enviou delay");
-        } catch (IOException e) {
-            e.printStackTrace();
+            oscMessage1.addArgument(idMessage);
+            oscMessage1.addArgument(delay);
+
+            try {
+                smartphone.getSender().send(oscMessage1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
 
     }
 }

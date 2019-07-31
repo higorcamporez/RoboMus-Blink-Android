@@ -35,7 +35,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     MidiDriver midiDriver = new MidiDriver();
-
+    private Smartphone smartphone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         String myIp = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
 
-        final Smartphone smartphone = new Smartphone(myIp, this,textLog);
+         this.smartphone = new Smartphone(myIp, this,textLog);
 
         btn_handshake.setOnClickListener(new View.OnClickListener(){
             public void onClick(View arg0) {
@@ -65,14 +65,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btn_settings.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View arg0) {
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-
-                startActivity(intent);
+                public void onClick(View arg0) {
+                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                    intent.putExtra("oscAddress", smartphone.getMyOscAddress());
+                    intent.putExtra("delaySwitch", smartphone.getEmulateDelay());
+                    startActivityForResult(intent,1);
+                }
             }
-        }
-
         );
+
+
         /*
         TrueTimeRx.build()
                 //.withConnectionTimeout(31428)
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.v("tt", "TrueTime deu ruim");
                     throwable.printStackTrace();
                 });
-                */
+
         midiDriver.start();
 
         // Get the configuration.
@@ -118,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         midiDriver.write(event);
+        */
     }
 
     @Override
@@ -140,6 +143,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                String oscAddress = data.getExtras().getString("oscAddress");
+                Boolean emulateDelay = data.getExtras().getBoolean("delaySwitch");
+                this.smartphone.setMyOscAddress(oscAddress);
+                this.smartphone.setEmulateDelay(emulateDelay);
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 

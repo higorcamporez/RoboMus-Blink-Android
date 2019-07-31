@@ -119,7 +119,7 @@ public final class R {
         public static final int async = 0x7f090040;
         public static final int blocking = 0x7f090044;
         public static final int chronometer = 0x7f09004f;
-        public static final int dialog_button = 0x7f090060;
+        public static final int dialog_button = 0x7f090061;
         public static final int forever = 0x7f090072;
         public static final int icon = 0x7f090079;
         public static final int icon_group = 0x7f09007b;
@@ -131,20 +131,20 @@ public final class R {
         public static final int notification_background = 0x7f090099;
         public static final int notification_main_column = 0x7f09009a;
         public static final int notification_main_column_container = 0x7f09009b;
-        public static final int right_icon = 0x7f0900ab;
-        public static final int right_side = 0x7f0900ac;
-        public static final int tag_accessibility_actions = 0x7f0900de;
-        public static final int tag_accessibility_clickable_spans = 0x7f0900df;
-        public static final int tag_accessibility_heading = 0x7f0900e0;
-        public static final int tag_accessibility_pane_title = 0x7f0900e1;
-        public static final int tag_screen_reader_focusable = 0x7f0900e2;
-        public static final int tag_transition_group = 0x7f0900e3;
-        public static final int tag_unhandled_key_event_manager = 0x7f0900e4;
-        public static final int tag_unhandled_key_listeners = 0x7f0900e5;
-        public static final int text = 0x7f0900e6;
-        public static final int text2 = 0x7f0900e7;
-        public static final int time = 0x7f0900f0;
-        public static final int title = 0x7f0900f1;
+        public static final int right_icon = 0x7f0900ac;
+        public static final int right_side = 0x7f0900ad;
+        public static final int tag_accessibility_actions = 0x7f0900df;
+        public static final int tag_accessibility_clickable_spans = 0x7f0900e0;
+        public static final int tag_accessibility_heading = 0x7f0900e1;
+        public static final int tag_accessibility_pane_title = 0x7f0900e2;
+        public static final int tag_screen_reader_focusable = 0x7f0900e3;
+        public static final int tag_transition_group = 0x7f0900e4;
+        public static final int tag_unhandled_key_event_manager = 0x7f0900e5;
+        public static final int tag_unhandled_key_listeners = 0x7f0900e6;
+        public static final int text = 0x7f0900e7;
+        public static final int text2 = 0x7f0900e8;
+        public static final int time = 0x7f0900f3;
+        public static final int title = 0x7f0900f4;
     }
     public static final class integer {
         private integer() {}
