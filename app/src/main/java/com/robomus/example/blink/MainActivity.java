@@ -1,6 +1,7 @@
 package com.robomus.example.blink;
 
 
+import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
@@ -39,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Button btn_handshake = findViewById(R.id.btn_handshake);
+        Button btn_settings = findViewById(R.id.settings);
+
         final TextView textLog = findViewById(R.id.textLog);
         //
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -59,6 +63,16 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        btn_settings.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View arg0) {
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+
+                startActivity(intent);
+            }
+        }
+
+        );
         /*
         TrueTimeRx.build()
                 //.withConnectionTimeout(31428)
