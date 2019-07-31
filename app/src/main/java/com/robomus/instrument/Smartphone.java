@@ -12,21 +12,33 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.illposed.osc.*;
 
+import com.instacart.library.truetime.TrueTimeRx;
+import com.robomus.instrument.Actions.PlayNote;
 import com.robomus.util.Note;
 import com.robomus.util.Notes;
 
+import org.billthefarmer.mididriver.MidiDriver;
+
+import io.reactivex.schedulers.Schedulers;
+
+
 public class Smartphone extends Instrument{
+
 
     private OSCPortOut sender;
     private OSCPortIn receiver;
     private TextView textLog;
     private Activity activity;
     private Note lastNote;
-    private  AudioTrack audioTrack;
+    private AudioTrack audioTrack;
+    private volatile Buffer buffer;
+    private Boolean ntpTime = false;
+    private volatile MidiDriver midiDriver;
 
     public Smartphone(String myIp, Activity activity, TextView textLog){
 
@@ -43,15 +55,20 @@ public class Smartphone extends Instrument{
         } catch (SocketException e) {
             e.printStackTrace();
         }
-        Note note = new Note("A4");
 
         listeningThread();
+
+        this.buffer = new Buffer(this);
+        buffer.start();
+
+        this.midiDriver = new MidiDriver();
 
         audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
                 8000, AudioFormat.CHANNEL_CONFIGURATION_MONO,
                 AudioFormat.ENCODING_PCM_16BIT, 4000,
                 AudioTrack.MODE_STATIC);
 
+        //this.playSoundSmartphone(440,500);
     }
 
     public Smartphone(String OscAddress, int receivePort, String myIp){
@@ -71,6 +88,7 @@ public class Smartphone extends Instrument{
         listeningThread();
 
     }
+
     public String getHeader(OSCMessage oscMessage){
         String header = (String) oscMessage.getAddress();
 
@@ -88,7 +106,7 @@ public class Smartphone extends Instrument{
     }
 
     public void listeningThread(){
-        Log.d("info","Inicio p=" + this.receivePort + " end=" + this.myOscAddress);
+        Log.d("info","Started p=" + this.receivePort + " end=" + this.myOscAddress);
 
         OSCListener listener = new OSCListener() {
 
@@ -102,27 +120,25 @@ public class Smartphone extends Instrument{
                         receiveHandshake(oscMessage);
                         break;
                     case "playNote":
-                        playNote(oscMessage);
+                        if(time == null){
+                            Log.i(getClass().getName(),"time==null");
+                        }else{
+                            Log.i(getClass().getName(),"time== " +time.toString() );
+
+                        }
+
+                        buffer.addMessage(
+                                new RoboMusMessage(
+                                        time,
+                                        oscMessage,
+                                        new PlayNote(midiDriver, oscMessage)
+                                )
+                        );
                         break;
+                    default:
+
+
                 }
-                /*
-                String log = oscMessage.getAddress()+" ";
-                    List l = oscMessage.getArguments();
-                    log += "[";
-                    for (Object l1 : l) {
-                        log +=l1+",";
-                    }
-                    log += ']';
-
-                final String finalLog = log;
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        textLog.append("\n"+ finalLog);
-
-                    }
-                });*/
 
             }
         };
@@ -160,13 +176,14 @@ public class Smartphone extends Instrument{
         this.audioTrack.play();
 
 
+
     }
 
     void playNote(OSCMessage oscMessage){
 
-        //Log.i("Smartphone:playNote()", "inicio");
+        Log.i("Smartphone:playNote()", "inicio");
 
-
+        long start = System.currentTimeMillis();
         Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
         String symbolNote = oscMessage.getArguments().get(1).toString();
         Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
@@ -185,14 +202,17 @@ public class Smartphone extends Instrument{
 
         playSoundSmartphone(note.getFrequency(), duration);
 
+        long t = System.currentTimeMillis() - start;
+        Log.i("Buffer", "tempo playnote "+t);
+
         this.lastNote = note;
         //Log.i("smartphone:playnote", delay.toString());
-
+        /*
         try {
             Thread.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        } */
 
         //envia o atraso mecânico
         OSCMessage oscMessage1 = new OSCMessage(this.serverOscAddress+"/delay"+this.myOscAddress);
@@ -250,8 +270,26 @@ public class Smartphone extends Instrument{
             e.printStackTrace();
         }
 
-    }
+        //acerta o relógio
+        requestTimeToNTPServer();
 
+    }
+    public void requestTimeToNTPServer(){
+        TrueTimeRx.build()
+                .withLoggingEnabled(true)
+                .withSharedPreferences(activity)
+                .initializeRx(this.severIpAddress)
+                .subscribeOn(Schedulers.io())
+                .subscribe(date -> {
+                    //Log.v("TrueTime", "TrueTime was initialized and we have a time: " + System.currentTimeMillis());
+                    Log.v("TrueTime", "TrueTime was initialized and we have a time: " + date);
+                    ntpTime = true;
+                }, throwable -> {
+                    Log.v("TrueTime", "TrueTime was not initialized");
+                    throwable.printStackTrace();
+                    ntpTime = false;
+                });
+    }
     public void sendHandshake(){
 
         List args = new ArrayList<>();
@@ -324,5 +362,5 @@ public class Smartphone extends Instrument{
         });
     }
 
-
+    public Smartphone getSmartphone(){ return this;}
 }

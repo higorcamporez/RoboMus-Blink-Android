@@ -8,9 +8,7 @@ import com.example.blink.R;
 import com.instacart.library.truetime.TrueTime;
 import com.instacart.library.truetime.TrueTimeRx;
 
-import com.medavox.library.mutime.MissingTimeDataException;
-import com.medavox.library.mutime.MuTime;
-import com.medavox.library.mutime.Ntp;
+
 import com.robomus.instrument.Smartphone;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +22,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.billthefarmer.mididriver.MidiDriver;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
@@ -34,6 +33,7 @@ import java.util.Date;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
+    MidiDriver midiDriver = new MidiDriver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+        /*
         TrueTimeRx.build()
                 //.withConnectionTimeout(31428)
                 //.withRetryCount(100)
@@ -75,37 +75,35 @@ public class MainActivity extends AppCompatActivity {
                     Log.v("tt", "TrueTime deu ruim");
                     throwable.printStackTrace();
                 });
-        Log.i("TrueTimeRx", TrueTimeRx.now().toString());
+                */
+        midiDriver.start();
 
+        // Get the configuration.
+        int[] config = midiDriver.config();
 
-        /*
+        // Print out the details.
+        Log.d(this.getClass().getName(), "maxVoices: " + config[0]);
+        Log.d(this.getClass().getName(), "numChannels: " + config[1]);
+        Log.d(this.getClass().getName(), "sampleRate: " + config[2]);
+        Log.d(this.getClass().getName(), "mixBufferSize: " + config[3]);
 
+        byte[] event = new byte[3];
+        event[0] = (byte) (0x90 | 0x00);  // 0x90 = note On, 0x00 = channel 1
+        event[1] = (byte) 0x3C;  // 0x3C = middle C
+        event[2] = (byte) 0x7F;  // 0x7F = the maximum velocity (127)
 
+        // Internally this just calls write() and can be considered obsoleted:
+        //midiDriver.queueEvent(event);
+
+        // Send the MIDI event to the synthesizer.
+        midiDriver.queueEvent(event);
+        event[1] = (byte) 0x3e;  // 0x3C = middle C
         try {
-            Ntp.performNtpAlgorithm(InetAddress.getByName("192.168.0.101") );
-        } catch (UnknownHostException e) {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        //get the real time in unix epoch format (milliseconds since midnight on 1 january 1970)
-        try {
-            Log.i("MuTime", String.valueOf(MuTime.hasTheTime()));
-            long theActualTime = MuTime.now();//throws MissingTimeDataException if we don't know the time
-            textLog.append(String.valueOf(System.currentTimeMillis() - theActualTime));
-            textLog.append(new Date(theActualTime).toString());
-        }
-        catch (MissingTimeDataException e) {
-            Log.e("MuTime", "failed to get the actual time:+e.getMessage()");
-        }
-         */
-        //while (!TrueTimeRx.isInitialized());
-        // you can now use this instead of your traditional new Date();
-        //Date myDate = TrueTimeRx.now();
-        //textLog.append(myDate.toString());
-        //get the real time in unix epoch format (milliseconds since midnight on 1 january 1970)
-
-        textLog.append("\ntime system: "+new Date(System.currentTimeMillis()).toString());
-
+        midiDriver.write(event);
     }
 
     @Override
