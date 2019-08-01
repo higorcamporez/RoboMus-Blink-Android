@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.os.Build;
 import android.text.BoringLayout;
 import android.util.Log;
 import android.widget.TextView;
@@ -44,24 +45,29 @@ public class Smartphone extends Instrument{
 
     public Smartphone(String myIp, Activity activity, TextView textLog){
 
-        super( "Smartphone", "/Smartphone", 1234, myIp);
+        super( "Smartphone", "/smartphone", 1234, myIp);
 
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+
+        if(model.equals("Moto G 2014")){
+            this.setMyOscAddress("/smartphone2");
+            this.setName("Smartphone2");
+        }
         this.activity = activity;
         this.textLog = textLog;
         this.polyphony = 1;
         this.typeFamily = "";
         this.specificProtocol = "</playNote;note_n; duration_i>";
-        this.emulateDelay = true;
+        this.emulateDelay = false;
         try {
             this.receiver = new OSCPortIn(this.receivePort);
         } catch (SocketException e) {
             e.printStackTrace();
         }
 
-        listeningThread();
-
         this.buffer = new Buffer(this);
-        buffer.start();
+
 
         this.midiDriver = new MidiDriver();
 
@@ -89,6 +95,11 @@ public class Smartphone extends Instrument{
 
         listeningThread();
 
+    }
+
+    public void start() {
+        this.buffer.start();
+        this.listeningThread();
     }
 
     public String getHeader(OSCMessage oscMessage){
@@ -385,4 +396,6 @@ public class Smartphone extends Instrument{
     public void setEmulateDelay(Boolean emulateDelay) {
         this.emulateDelay = emulateDelay;
     }
+
+
 }

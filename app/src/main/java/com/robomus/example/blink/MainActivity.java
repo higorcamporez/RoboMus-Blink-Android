@@ -3,6 +3,7 @@ package com.robomus.example.blink;
 
 import android.content.Intent;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.blink.R;
@@ -35,7 +36,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     MidiDriver midiDriver = new MidiDriver();
-    private Smartphone smartphone;
+    Smartphone smartphone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +55,13 @@ public class MainActivity extends AppCompatActivity {
         WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         String myIp = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
 
-         this.smartphone = new Smartphone(myIp, this,textLog);
+
+
+        this.smartphone = new Smartphone(myIp, this,textLog);
 
         btn_handshake.setOnClickListener(new View.OnClickListener(){
             public void onClick(View arg0) {
+                smartphone.start();
                 smartphone.sendHandshake();
                 textLog.setText("Handshake sent. waiting...");
 
@@ -91,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.v("tt", "TrueTime deu ruim");
                     throwable.printStackTrace();
                 });
-
+        */
         midiDriver.start();
 
         // Get the configuration.
@@ -120,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         midiDriver.write(event);
-        */
+
     }
 
     @Override

@@ -34,9 +34,9 @@ public class Buffer extends Thread {
     public void run() {
         while(true){
             //Log.i(getClass().getName(), "antes " + this.messages.size());
-            if(this.messages.size()>0){
-                //Log.i(getClass().getName(), "depois " + this.messages.size());
-                synchronized (this) {
+            synchronized (this) {
+                if(this.messages.size()>0){
+                    //Log.i(getClass().getName(), "depois " + this.messages.size());
 
                     if (this.messages.get(0).getTimestamp().getTime() <
                             TrueTimeRx.now().getTime()) {
