@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         btn_handshake.setOnClickListener(new View.OnClickListener(){
             public void onClick(View arg0) {
+                smartphone.stop();
                 smartphone.start();
                 smartphone.sendHandshake();
                 textLog.setText("Handshake sent. waiting...");
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                     intent.putExtra("oscAddress", smartphone.getMyOscAddress());
                     intent.putExtra("delaySwitch", smartphone.getEmulateDelay());
+                    intent.putExtra("constantDelay", smartphone.getConstantDelay());
                     startActivityForResult(intent,1);
                 }
             }
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     throwable.printStackTrace();
                 });
         */
+        /*
         midiDriver.start();
 
         // Get the configuration.
@@ -124,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         midiDriver.write(event);
-
+        */
     }
 
     @Override
@@ -153,10 +156,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case 1:
+
                 String oscAddress = data.getExtras().getString("oscAddress");
                 Boolean emulateDelay = data.getExtras().getBoolean("delaySwitch");
+                Long constantDelay = data.getExtras().getLong("constantDelay");
                 this.smartphone.setMyOscAddress(oscAddress);
                 this.smartphone.setEmulateDelay(emulateDelay);
+                this.smartphone.setConstantDelay(constantDelay);
+
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -5,7 +5,6 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Build;
-import android.text.BoringLayout;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -14,7 +13,6 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.illposed.osc.*;
@@ -29,7 +27,7 @@ import org.billthefarmer.mididriver.MidiDriver;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class Smartphone extends Instrument{
+public class Smartphone extends Instrument {
 
 
     private OSCPortOut sender;
@@ -42,15 +40,16 @@ public class Smartphone extends Instrument{
     private Boolean ntpTime = false;
     private volatile MidiDriver midiDriver;
     private Boolean emulateDelay;
+    private Long constantDelay;
 
-    public Smartphone(String myIp, Activity activity, TextView textLog){
+    public Smartphone(String myIp, Activity activity, TextView textLog) {
 
-        super( "Smartphone", "/smartphone", 1234, myIp);
+        super("Smartphone", "/smartphone", 1234, myIp);
 
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
 
-        if(model.equals("Moto G 2014")){
+        if (model.equals("Moto G 2014")) {
             this.setMyOscAddress("/smartphone2");
             this.setName("Smartphone2");
         }
@@ -60,6 +59,8 @@ public class Smartphone extends Instrument{
         this.typeFamily = "";
         this.specificProtocol = "</playNote;note_n; duration_i>";
         this.emulateDelay = false;
+        this.constantDelay = (long)300;
+
         try {
             this.receiver = new OSCPortIn(this.receivePort);
         } catch (SocketException e) {
@@ -67,7 +68,7 @@ public class Smartphone extends Instrument{
         }
 
         this.buffer = new Buffer(this);
-
+        this.buffer.start();
 
         this.midiDriver = new MidiDriver();
 
@@ -79,9 +80,9 @@ public class Smartphone extends Instrument{
         //this.playSoundSmartphone(440,500);
     }
 
-    public Smartphone(String OscAddress, int receivePort, String myIp){
+    public Smartphone(String OscAddress, int receivePort, String myIp) {
 
-        super( "Smartphone", OscAddress, receivePort, myIp);
+        super("Smartphone", OscAddress, receivePort, myIp);
 
         this.polyphony = 1;
         this.typeFamily = "";
@@ -98,8 +99,12 @@ public class Smartphone extends Instrument{
     }
 
     public void start() {
-        this.buffer.start();
+
         this.listeningThread();
+    }
+
+    public void stop() {
+        this.receiver.stopListening();
     }
 
     public String getHeader(OSCMessage oscMessage){
@@ -240,11 +245,12 @@ public class Smartphone extends Instrument{
     public Long calculateDelay(Note Note1, Note Note2){
         Long delay;
         if(this.lastNote == null){
-            delay = (long)100;
+            delay = this.constantDelay;
         }else{
-            delay = Long.valueOf(
+            /*delay = Long.valueOf(
                     (Math.abs(Notes.getDistance(Note1, Note2, true) * 10))
-            ) + 10;
+            ) + 10;*/
+            delay = this.constantDelay;
         }
 
         return delay;
@@ -397,5 +403,11 @@ public class Smartphone extends Instrument{
         this.emulateDelay = emulateDelay;
     }
 
+    public Long getConstantDelay() {
+        return constantDelay;
+    }
 
+    public void setConstantDelay(Long constantDelay) {
+        this.constantDelay = constantDelay;
+    }
 }

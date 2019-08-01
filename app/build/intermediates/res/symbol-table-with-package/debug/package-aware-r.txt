@@ -1144,6 +1144,7 @@ drawable tooltip_frame_dark
 drawable tooltip_frame_light
 id ALT
 id CTRL
+id ETconstantDelay
 id FUNCTION
 id META
 id SHIFT
@@ -1225,6 +1226,7 @@ id chronometer
 id clip_horizontal
 id clip_vertical
 id collapseActionView
+id constantDelay
 id container
 id content
 id contentPanel
