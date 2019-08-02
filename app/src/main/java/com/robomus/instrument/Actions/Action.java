@@ -1,5 +1,5 @@
 package com.robomus.instrument.Actions;
 
-public interface Action {
+public interface Action{
     void play();
 }

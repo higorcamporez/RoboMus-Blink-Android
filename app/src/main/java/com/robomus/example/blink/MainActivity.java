@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     throwable.printStackTrace();
                 });
         */
-        /*
+
         midiDriver.start();
 
         // Get the configuration.
@@ -120,14 +120,22 @@ public class MainActivity extends AppCompatActivity {
 
         // Send the MIDI event to the synthesizer.
         midiDriver.queueEvent(event);
-        event[1] = (byte) 0x3e;  // 0x3C = middle C
+        event[1] = (byte) 0x3e;
         try {
-            Thread.sleep(500);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        midiDriver.write(event);
-        */
+        byte[] e = new byte[3];
+        e[0] = (byte)(0x80 | 0x00);
+        e[1] = (byte) 0x3C;  // 0x3C = middle C
+        e[2] = (byte) 0x7F;  // 0x7F = the maximum velocity (127)
+
+        midiDriver.write(e);
+        //midiDriver.write(event);
+
+
+
     }
 
     @Override
