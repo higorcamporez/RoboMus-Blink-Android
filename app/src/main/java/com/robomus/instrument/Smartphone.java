@@ -1,24 +1,39 @@
 package com.robomus.instrument;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.hardware.usb.UsbAccessory;
+import android.hardware.usb.UsbManager;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Build;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.widget.TextView;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.illposed.osc.*;
 
 import com.instacart.library.truetime.TrueTimeRx;
 import com.robomus.instrument.Actions.PlayNote;
+import com.robomus.instrument.Actions.PlayUSB;
 import com.robomus.util.Note;
 import com.robomus.util.Notes;
 
@@ -41,8 +56,14 @@ public class Smartphone extends Instrument {
     private volatile MidiDriver midiDriver;
     private Boolean emulateDelay;
     private Long constantDelay;
+    private ParcelFileDescriptor mFileDescriptor;
+    private FileInputStream mInputStream = null;
+    private FileOutputStream mOutputStream = null;
+    private BufferedWriter bufferedWriter;
+    private FileOutputStream fileOutputStream;
+    private OutputStreamWriter outputStreamWriter;
 
-    public Smartphone(String myIp, Activity activity, TextView textLog) {
+    public Smartphone(String myIp, Activity activity, TextView textLog, ParcelFileDescriptor mFileDescriptor) {
 
         super("Smartphone", "/smartphone", 1234, myIp);
 
@@ -59,7 +80,7 @@ public class Smartphone extends Instrument {
         this.typeFamily = "";
         this.specificProtocol = "</playNote;note_n; duration_i>";
         this.emulateDelay = false;
-        this.constantDelay = (long)300;
+        this.constantDelay = (long) 300;
 
         try {
             this.receiver = new OSCPortIn(this.receivePort);
@@ -67,17 +88,43 @@ public class Smartphone extends Instrument {
             e.printStackTrace();
         }
 
-        this.buffer = new Buffer(this);
-        this.buffer.start();
-
-        this.midiDriver = new MidiDriver();
-
         audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
                 8000, AudioFormat.CHANNEL_CONFIGURATION_MONO,
                 AudioFormat.ENCODING_PCM_16BIT, 4000,
                 AudioTrack.MODE_STATIC);
 
-        //this.playSoundSmartphone(440,500);
+        this.buffer = new Buffer(this);
+        this.buffer.start();
+
+        this.midiDriver = new MidiDriver();
+        //this.midiDriver.start();
+
+        //android accessory communication
+
+        this.mFileDescriptor = mFileDescriptor;
+        if (mFileDescriptor != null) {
+            FileDescriptor fd = mFileDescriptor.getFileDescriptor();
+            mInputStream = new FileInputStream(fd);
+            mOutputStream = new FileOutputStream(fd);
+        }
+
+        //end accessory
+        String name = model.replace(' ', '_');
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                name + ".csv");
+
+        fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        outputStreamWriter = new OutputStreamWriter(fileOutputStream);
+
+        bufferedWriter = new BufferedWriter(outputStreamWriter);
+
+
     }
 
     public Smartphone(String OscAddress, int receivePort, String myIp) {
@@ -105,6 +152,19 @@ public class Smartphone extends Instrument {
 
     public void stop() {
         this.receiver.stopListening();
+    }
+
+    public void sendUsbMessage(byte[] bytes) {
+
+        if (mOutputStream != null) {
+            try {
+                mOutputStream.write(bytes);
+            } catch (IOException e) {
+                this.writeOnScreen("Erro ao enviar msg USB");
+                e.printStackTrace();
+            }
+
+        }
     }
 
     public String getHeader(OSCMessage oscMessage){
@@ -151,6 +211,19 @@ public class Smartphone extends Instrument {
                                 )
                         );
                         break;
+                    case "playUsb":
+                        buffer.addMessage(
+                                new RoboMusMessage(
+                                        time,
+                                        oscMessage,
+                                        new PlayUSB(getSmartphone(), oscMessage)
+                                )
+                        );
+                        break;
+                    case "closeFile":
+                        closeFile();
+                        writeOnScreen("fechou arquivo");
+                        break;
                     default:
 
 
@@ -190,7 +263,7 @@ public class Smartphone extends Instrument {
 
         this.audioTrack.write(generatedSnd, 0, generatedSnd.length);
         this.audioTrack.play();
-
+        Log.i(getClass().getName(),"playaudio");
 
 
     }
@@ -305,9 +378,19 @@ public class Smartphone extends Instrument {
                     ntpTime = true;
                 }, throwable -> {
                     Log.v("TrueTime", "TrueTime was not initialized");
+                    ntpTime = false;
                     throwable.printStackTrace();
                     ntpTime = false;
                 });
+
+        long ti = System.currentTimeMillis();
+        while (ntpTime == false && System.currentTimeMillis()-ti < 5000){}
+
+        if(ntpTime){
+            this.writeOnScreen("TrueTime was initialized");
+        }else{
+            this.writeOnScreen("TrueTime was NOT initialized, try again!");
+        }
     }
     public void sendHandshake(){
 
@@ -323,7 +406,6 @@ public class Smartphone extends Instrument {
         args.add(this.specificProtocol);
 
 
-
         OSCMessage msg = new OSCMessage("/handshake/instrument", args);
         OSCPortOut sender = null;
 
@@ -331,8 +413,10 @@ public class Smartphone extends Instrument {
         String s = this.myIp;
         String[] ip = s.split("\\.");
         String broadcastIp = ip[0]+"."+ip[1]+"."+ip[2]+".255";
+        //System.out.println(broadcastIp);
+        //String broadcastIp = ip[0]+"."+ip[1]+"."+"255"+".255";
         //temporario
-        //String broadcastIp = "172.20.25.91";
+        //String broadcastIp = "172.20.24.57";
         try {
             sender = new OSCPortOut(InetAddress.getByName(broadcastIp), this.receivePort);
         } catch (SocketException e) {
@@ -346,7 +430,7 @@ public class Smartphone extends Instrument {
             if(sender != null)
                 sender.send(msg);
             else
-                Log.d("ninfo","nulllll");
+                Log.d("info","nulllll");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -381,6 +465,7 @@ public class Smartphone extends Instrument {
         });
     }
 
+
     public Smartphone getSmartphone(){ return this;}
 
     public OSCPortOut getSender() {
@@ -409,5 +494,27 @@ public class Smartphone extends Instrument {
 
     public void setConstantDelay(Long constantDelay) {
         this.constantDelay = constantDelay;
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void writeOnFile(String data){
+        try {
+            bufferedWriter.write(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void closeFile(){
+        try {
+            bufferedWriter.close();
+            outputStreamWriter.close();
+            fileOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

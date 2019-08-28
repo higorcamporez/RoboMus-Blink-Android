@@ -5879,13 +5879,13 @@ public final class R {
     public static final int navigation_header_container=0x7f090094;
     public static final int navigation_home=0x7f090095;
     public static final int navigation_notifications=0x7f090096;
-    public static final int nestedScrollView=0x7f090097;
-    public static final int never=0x7f090098;
-    public static final int none=0x7f090099;
-    public static final int normal=0x7f09009a;
-    public static final int notification_background=0x7f09009b;
-    public static final int notification_main_column=0x7f09009c;
-    public static final int notification_main_column_container=0x7f09009d;
+    public static final int never=0x7f090097;
+    public static final int none=0x7f090098;
+    public static final int normal=0x7f090099;
+    public static final int notification_background=0x7f09009a;
+    public static final int notification_main_column=0x7f09009b;
+    public static final int notification_main_column_container=0x7f09009c;
+    public static final int ntpSynch=0x7f09009d;
     public static final int off=0x7f09009e;
     public static final int on=0x7f09009f;
     public static final int oscAddress=0x7f0900a0;
@@ -23124,6 +23124,7 @@ public final class R {
     public static final int ViewStubCompat_android_inflatedId=2;
   }
   public static final class xml {
-    public static final int root_preferences=0x7f120000;
+    public static final int accessory_filter=0x7f120000;
+    public static final int root_preferences=0x7f120001;
   }
 }

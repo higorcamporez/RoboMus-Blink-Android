@@ -105,11 +105,11 @@ public final class R {
         public static final int left = 0x7f090086;
         public static final int line1 = 0x7f090087;
         public static final int line3 = 0x7f090088;
-        public static final int none = 0x7f090099;
-        public static final int normal = 0x7f09009a;
-        public static final int notification_background = 0x7f09009b;
-        public static final int notification_main_column = 0x7f09009c;
-        public static final int notification_main_column_container = 0x7f09009d;
+        public static final int none = 0x7f090098;
+        public static final int normal = 0x7f090099;
+        public static final int notification_background = 0x7f09009a;
+        public static final int notification_main_column = 0x7f09009b;
+        public static final int notification_main_column_container = 0x7f09009c;
         public static final int right = 0x7f0900ad;
         public static final int right_icon = 0x7f0900ae;
         public static final int right_side = 0x7f0900af;

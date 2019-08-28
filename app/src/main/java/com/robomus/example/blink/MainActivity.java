@@ -1,7 +1,10 @@
 package com.robomus.example.blink;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.usb.UsbAccessory;
+import android.hardware.usb.UsbManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,19 +18,30 @@ import com.robomus.instrument.Smartphone;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.os.StrictMode;
 import android.text.format.Formatter;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import org.billthefarmer.mididriver.MidiDriver;
 import org.w3c.dom.Text;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -35,17 +49,27 @@ import java.util.Date;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
-    MidiDriver midiDriver = new MidiDriver();
+
     Smartphone smartphone;
+    private volatile ParcelFileDescriptor mFileDescriptor;
+    private UsbManager mUsbManager;
+    private UsbAccessory mAccessory;
+
+    private FileInputStream mInputStream;
+    private FileOutputStream mOutputStream;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Button btn_handshake = findViewById(R.id.btn_handshake);
         Button btn_settings = findViewById(R.id.settings);
 
         final TextView textLog = findViewById(R.id.textLog);
+        //textLog.setMovementMethod(new ScrollingMovementMethod());
+
         //
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -56,8 +80,23 @@ public class MainActivity extends AppCompatActivity {
         String myIp = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
 
 
+        //android accessory communication
+        Intent intent = getIntent();
+        mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+        mAccessory = intent.getParcelableExtra(UsbManager.EXTRA_ACCESSORY);
 
-        this.smartphone = new Smartphone(myIp, this,textLog);
+        if (mAccessory == null) {
+            textLog.append("Not started by the accessory directly" +
+                    System.getProperty("line.separator"));
+            mFileDescriptor = null;
+        }else{
+            mFileDescriptor = mUsbManager.openAccessory(mAccessory);
+        }
+
+
+        //end accessory
+
+        this.smartphone = new Smartphone(myIp, this,textLog, mFileDescriptor);
 
         btn_handshake.setOnClickListener(new View.OnClickListener(){
             public void onClick(View arg0) {
@@ -71,10 +110,12 @@ public class MainActivity extends AppCompatActivity {
 
         btn_settings.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View arg0) {
+                    smartphone.sendUsbMessage(new byte[]{1});
                     Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                     intent.putExtra("oscAddress", smartphone.getMyOscAddress());
                     intent.putExtra("delaySwitch", smartphone.getEmulateDelay());
                     intent.putExtra("constantDelay", smartphone.getConstantDelay());
+                    intent.putExtra("serverIp", smartphone.getSeverIpAddress());
                     startActivityForResult(intent,1);
                 }
             }
@@ -82,23 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         /*
-        TrueTimeRx.build()
-                //.withConnectionTimeout(31428)
-                //.withRetryCount(100)
-                //.withLoggingEnabled(true)
-                .withSharedPreferences(this)
-                .initializeRx("192.168.0.101")
-                .subscribeOn(Schedulers.io())
-                .subscribe(date -> {
-                    Log.v("tt", "TrueTime was initialized and we have a time: " + System.currentTimeMillis());
-                    Log.v("tt", "TrueTime was initialized and we have a time: " + date);
-                    textLog.append("\ntime serve: "+ date.toString());
-                }, throwable -> {
-                    Log.v("tt", "TrueTime deu ruim");
-                    throwable.printStackTrace();
-                });
-        */
-
+        MidiDriver midiDriver = new MidiDriver();
         midiDriver.start();
 
         // Get the configuration.
@@ -115,10 +140,8 @@ public class MainActivity extends AppCompatActivity {
         event[1] = (byte) 0x3C;  // 0x3C = middle C
         event[2] = (byte) 0x7F;  // 0x7F = the maximum velocity (127)
 
-        // Internally this just calls write() and can be considered obsoleted:
-        //midiDriver.queueEvent(event);
-
         // Send the MIDI event to the synthesizer.
+
         midiDriver.queueEvent(event);
         event[1] = (byte) 0x3e;
         try {
@@ -132,8 +155,21 @@ public class MainActivity extends AppCompatActivity {
         e[2] = (byte) 0x7F;  // 0x7F = the maximum velocity (127)
 
         midiDriver.write(e);
-        //midiDriver.write(event);
 
+
+        for (int i = 0; i < 20; i++) {
+
+
+            midiDriver.write(event);
+            //Log.i("tocou", String.valueOf(System.currentTimeMillis()));
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+
+        }
+        */
 
 
     }

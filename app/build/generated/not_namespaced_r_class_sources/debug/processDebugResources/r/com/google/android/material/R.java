@@ -1074,11 +1074,11 @@ public final class R {
         public static final int mtrl_internal_children_alpha_tag = 0x7f090091;
         public static final int multiply = 0x7f090092;
         public static final int navigation_header_container = 0x7f090094;
-        public static final int none = 0x7f090099;
-        public static final int normal = 0x7f09009a;
-        public static final int notification_background = 0x7f09009b;
-        public static final int notification_main_column = 0x7f09009c;
-        public static final int notification_main_column_container = 0x7f09009d;
+        public static final int none = 0x7f090098;
+        public static final int normal = 0x7f090099;
+        public static final int notification_background = 0x7f09009a;
+        public static final int notification_main_column = 0x7f09009b;
+        public static final int notification_main_column_container = 0x7f09009c;
         public static final int outline = 0x7f0900a1;
         public static final int parallax = 0x7f0900a3;
         public static final int parentPanel = 0x7f0900a5;

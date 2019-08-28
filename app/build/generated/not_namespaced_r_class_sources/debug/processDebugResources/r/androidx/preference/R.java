@@ -829,11 +829,11 @@ public final class R {
         public static final int list_item = 0x7f09008a;
         public static final int message = 0x7f09008d;
         public static final int multiply = 0x7f090092;
-        public static final int none = 0x7f090099;
-        public static final int normal = 0x7f09009a;
-        public static final int notification_background = 0x7f09009b;
-        public static final int notification_main_column = 0x7f09009c;
-        public static final int notification_main_column_container = 0x7f09009d;
+        public static final int none = 0x7f090098;
+        public static final int normal = 0x7f090099;
+        public static final int notification_background = 0x7f09009a;
+        public static final int notification_main_column = 0x7f09009b;
+        public static final int notification_main_column_container = 0x7f09009c;
         public static final int off = 0x7f09009e;
         public static final int on = 0x7f09009f;
         public static final int parentPanel = 0x7f0900a5;

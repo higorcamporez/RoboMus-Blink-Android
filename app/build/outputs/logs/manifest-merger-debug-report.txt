@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-39:12
-INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-39:12
-INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-39:12
-INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-39:12
+ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-43:12
+INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-43:12
+INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-43:12
+INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-43:12
 MERGED from [com.google.android.material:material:1.0.0] C:\Users\higor\.gradle\caches\transforms-2\files-2.1\e3448e11e570be216f0e197c278b1148\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.preference:preference:1.1.0-rc01] C:\Users\higor\.gradle\caches\transforms-2\files-2.1\d1d7037dcc5b881cb515d2b94f831b62\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.appcompat:appcompat:1.1.0-rc01] C:\Users\higor\.gradle\caches\transforms-2\files-2.1\05ec9fa303880ffb43663aedada6f226\AndroidManifest.xml:17:1-24:12
@@ -44,20 +44,20 @@ MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\higor\.gradle
 MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\higor\.gradle\caches\transforms-2\files-2.1\27d28d59eff74c2026b1baf005890865\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\higor\.gradle\caches\transforms-2\files-2.1\2129328e6ecb12b5edd13f9dfea79e6c\AndroidManifest.xml:17:1-22:12
 MERGED from [com.github.instacart.truetime-android:library:3.3] C:\Users\higor\.gradle\caches\transforms-2\files-2.1\213a0929f1efb3a28c3d17de98f10356\AndroidManifest.xml:2:1-27:12
-INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-39:12
-INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-39:12
-INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-39:12
+INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-43:12
+INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-43:12
+INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-43:12
 	package
 		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:3:5-32
 		INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml
 		INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-39:12
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-43:12
 		INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml
 	android:versionCode
 		INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-39:12
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:1-43:12
 		INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:2:11-69
@@ -77,8 +77,12 @@ uses-permission#com.google.android.things.permission.SET_TIME
 ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:7:5-85
 	android:name
 		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:7:22-82
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:8:5-81
+	android:name
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:8:22-78
 application
-ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:9:5-37:19
+ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:10:5-41:19
 MERGED from [com.google.android.material:material:1.0.0] C:\Users\higor\.gradle\caches\transforms-2\files-2.1\e3448e11e570be216f0e197c278b1148\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.0.0] C:\Users\higor\.gradle\caches\transforms-2\files-2.1\e3448e11e570be216f0e197c278b1148\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\higor\.gradle\caches\transforms-2\files-2.1\9ca8577b2589793b938af430d1b75ee9\AndroidManifest.xml:9:5-20
@@ -94,57 +98,67 @@ MERGED from [com.github.instacart.truetime-android:library:3.3] C:\Users\higor\.
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.1.0-rc01] C:\Users\higor\.gradle\caches\transforms-2\files-2.1\a015fb89542fb05915528e3c5b0289e6\AndroidManifest.xml:24:18-86
 	android:supportsRtl
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:14:9-35
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:15:9-35
 	android:label
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:12:9-41
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:13:9-41
 	android:roundIcon
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:13:9-54
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:14:9-54
 	android:icon
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:11:9-43
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:12:9-43
 	android:allowBackup
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:10:9-35
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:11:9-35
 	android:theme
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:15:9-40
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:16:9-40
 activity#com.robomus.example.blink.SettingsActivity
-ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:16:9-19:68
+ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:17:9-20:68
 	android:label
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:18:13-60
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:19:13-60
 	android:theme
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:19:13-56
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:20:13-56
 	android:name
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:17:13-70
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:18:13-70
 activity#com.example.blink.Main2Activity
-ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:20:9-23:59
+ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:21:9-24:59
 	android:label
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:22:13-57
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:23:13-57
 	android:theme
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:23:13-56
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:24:13-56
 	android:name
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:21:13-42
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:22:13-42
 activity#com.example.blink.SettingsActivity
-ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:24:9-26:63
+ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:25:9-27:63
 	android:label
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:26:13-60
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:27:13-60
 	android:name
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:25:13-45
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:26:13-45
 activity#com.robomus.example.blink.MainActivity
-ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:27:9-36:20
+ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:28:9-40:20
 	android:label
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:29:13-45
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:30:13-45
 	android:theme
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:30:13-56
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:31:13-56
 	android:name
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:28:13-66
-intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:31:13-35:29
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:29:13-66
+intent-filter#action:name:android.hardware.usb.action.USB_ACCESSORY_ATTACHED+action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:32:13-36:29
 action#android.intent.action.MAIN
-ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:32:17-69
+ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:33:17-69
 	android:name
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:32:25-66
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:33:25-66
+action#android.hardware.usb.action.USB_ACCESSORY_ATTACHED
+ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:34:17-93
+	android:name
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:34:25-90
 category#android.intent.category.LAUNCHER
-ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:34:17-77
+ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:35:17-77
 	android:name
-		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:34:27-74
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:35:27-74
+meta-data#android.hardware.usb.action.USB_ACCESSORY_ATTACHED
+ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:37:13-39:60
+	android:resource
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:39:17-57
+	android:name
+		ADDED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml:38:17-82
 uses-sdk
 INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from E:\Documentos\Android\blink\app\src\main\AndroidManifest.xml

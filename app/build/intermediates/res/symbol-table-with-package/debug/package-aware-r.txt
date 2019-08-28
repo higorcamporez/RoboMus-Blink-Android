@@ -1293,13 +1293,13 @@ id navigation_dashboard
 id navigation_header_container
 id navigation_home
 id navigation_notifications
-id nestedScrollView
 id never
 id none
 id normal
 id notification_background
 id notification_main_column
 id notification_main_column_container
+id ntpSynch
 id off
 id on
 id oscAddress
@@ -2225,4 +2225,5 @@ styleable Toolbar android_gravity android_minHeight buttonGravity collapseConten
 styleable View android_theme android_focusable paddingEnd paddingStart theme
 styleable ViewBackgroundHelper android_background backgroundTint backgroundTintMode
 styleable ViewStubCompat android_id android_layout android_inflatedId
+xml accessory_filter
 xml root_preferences
