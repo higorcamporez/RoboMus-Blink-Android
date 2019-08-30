@@ -16,7 +16,7 @@ public abstract class Instrument {
     protected String myOscAddress; //endereço do OSC do instrumento
     protected String serverOscAddress; //endereço do OSC do instrumento
     protected String serverName;
-    protected String severIpAddress; // endereco do servidor
+    protected String serverIpAddress; // endereco do servidor
     protected int sendPort; // porta para envio msgOSC
     protected int receivePort; // porta pra receber msgOSC
     protected String typeFamily; //tipo do instrumento
@@ -76,12 +76,12 @@ public abstract class Instrument {
         this.serverName = serverName;
     }
 
-    public String getSeverIpAddress() {
-        return severIpAddress;
+    public String getServerIpAddress() {
+        return this.serverIpAddress;
     }
 
-    public void setSeverIpAddress(String severIpAddress) {
-        this.severIpAddress = severIpAddress;
+    public void setServerIpAddress(String severIpAddress) {
+        this.serverIpAddress = severIpAddress;
     }
 
     public int getSendPort() {

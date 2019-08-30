@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("oscAddress", smartphone.getMyOscAddress());
                     intent.putExtra("delaySwitch", smartphone.getEmulateDelay());
                     intent.putExtra("constantDelay", smartphone.getConstantDelay());
-                    intent.putExtra("serverIp", smartphone.getSeverIpAddress());
+                    intent.putExtra("serverIp", smartphone.getServerIpAddress());
                     startActivityForResult(intent,1);
                 }
             }

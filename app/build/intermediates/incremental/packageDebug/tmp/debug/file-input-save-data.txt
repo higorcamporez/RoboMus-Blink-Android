@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Wed Jul 31 16:42:15 BRT 2019
+#Thu Aug 29 15:01:29 BRT 2019
 2.base=E\:\\Documentos\\Android\\blink\\app\\build\\intermediates\\transforms\\stripDebugSymbol\\debug\\0
 0.path=classes.dex
 2.baseType=DIRECTORY

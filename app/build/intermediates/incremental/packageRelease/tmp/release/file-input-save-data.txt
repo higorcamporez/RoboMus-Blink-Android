@@ -1,7 +1,0 @@
-#Internal package file, do not edit.
-#Thu Jul 25 12:16:42 BRT 2019
-0.baseType=DIRECTORY
-0.base=D\:\\Documentos\\Android\\blink\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\out
-0.path=classes.dex
-0.set=DEX
-count=1

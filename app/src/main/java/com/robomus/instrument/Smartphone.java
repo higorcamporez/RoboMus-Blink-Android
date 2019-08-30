@@ -62,6 +62,7 @@ public class Smartphone extends Instrument {
     private BufferedWriter bufferedWriter;
     private FileOutputStream fileOutputStream;
     private OutputStreamWriter outputStreamWriter;
+    private NTP ntp;
 
     public Smartphone(String myIp, Activity activity, TextView textLog, ParcelFileDescriptor mFileDescriptor) {
 
@@ -95,6 +96,9 @@ public class Smartphone extends Instrument {
 
         this.buffer = new Buffer(this);
         this.buffer.start();
+
+        this.ntp = new NTP(this);
+
 
         this.midiDriver = new MidiDriver();
         //this.midiDriver.start();
@@ -333,7 +337,7 @@ public class Smartphone extends Instrument {
 
         this.serverName = oscMessage.getArguments().get(0).toString();
         this.serverOscAddress = oscMessage.getArguments().get(1).toString();
-        this.severIpAddress = oscMessage.getArguments().get(2).toString();
+        this.serverIpAddress = oscMessage.getArguments().get(2).toString();
         this.sendPort = Integer.parseInt(oscMessage.getArguments().get(3).toString());
         /*
         //log screen
@@ -355,7 +359,7 @@ public class Smartphone extends Instrument {
         this.sender = null;
 
         try {
-            this.sender = new OSCPortOut(InetAddress.getByName(this.severIpAddress), this.sendPort);
+            this.sender = new OSCPortOut(InetAddress.getByName(this.serverIpAddress), this.sendPort);
         } catch (SocketException e) {
             e.printStackTrace();
         } catch (UnknownHostException e) {
@@ -370,7 +374,7 @@ public class Smartphone extends Instrument {
         TrueTimeRx.build()
                 .withLoggingEnabled(true)
                 .withSharedPreferences(activity)
-                .initializeRx(this.severIpAddress)
+                .initializeRx(this.serverIpAddress)
                 .subscribeOn(Schedulers.io())
                 .subscribe(date -> {
                     //Log.v("TrueTime", "TrueTime was initialized and we have a time: " + System.currentTimeMillis());
@@ -391,6 +395,9 @@ public class Smartphone extends Instrument {
         }else{
             this.writeOnScreen("TrueTime was NOT initialized, try again!");
         }
+
+        this.ntp.start();
+
     }
     public void sendHandshake(){
 
